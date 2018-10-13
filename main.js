@@ -33,19 +33,16 @@ function getTestData() {
  * シートからJsonKey及び階層を配列として取得
  * @param {sheet} sheet 対象シート
  * @param {Array} data シートの配列データ
- * @returns {Array} d JsonKey及び階層が読み込まれた配列
+ * @returns {Array} JsonKey及び階層が読み込まれた配列
  */
 function getJsonKeyRange(sheet, data){
   var lastIndexs = getLastIndex(sheet)
-  var START_COLUMN_INDEX = 1
-  var END_COLUMN_INDEX = 8
-  var START_ROW_INDEX = 3
-  var TAG_COUNT = lastIndexs[0] - START_ROW_INDEX
-  var d = createDataInitialize(TAG_COUNT, END_COLUMN_INDEX)
+  var TAG_COUNT = lastIndexs[0] - DATA_FIRST_ROW
+  var d = createDataInitialize(TAG_COUNT, JSON_KEY_LAST_COLUMN)
   var i, j
   for(i = 0; i < TAG_COUNT; i++){
-    for(j = 0; j < END_COLUMN_INDEX; j++){
-      d[i][j] = data[i + START_ROW_INDEX][j + START_COLUMN_INDEX]
+    for(j = 0; j < JSON_KEY_LAST_COLUMN; j++){
+      d[i][j] = data[i + DATA_FIRST_ROW][j + JSON_KEY_FIRST_COLUMN]
     }
   }
   return d
@@ -55,24 +52,22 @@ function getJsonKeyRange(sheet, data){
  * 対象シートから設定するクラスの配列を取得
  * @param {sheet} sheet 対象シート
  * @param {Array} data シートの全データ
- * @returns {Array} d 設定するクラスの配列
+ * @returns {Array} 設定するクラスの配列
  */
 function getDataClass(sheet, data){
   var lastIndexs = getLastIndex(sheet)
-  var DATA_CLASS_COLUMN_INDEX = 10
-  var START_ROW_INDEX = 3
-  var TAG_COUNT = lastIndexs[0] - START_ROW_INDEX
+  var TAG_COUNT = lastIndexs[0] - DATA_FIRST_ROW
   var d = new Array()
-  for(var i = START_ROW_INDEX; i < TAG_COUNT + START_ROW_INDEX; i++){
-    d.push(data[i][DATA_CLASS_COLUMN_INDEX])
+  for(var i = DATA_FIRST_ROW; i < TAG_COUNT + DATA_FIRST_ROW; i++){
+    d.push(data[i][DATA_CLASS_COLUMN])
   }
   return d
 }
 
 /**
  * 生成するテストデータの初期化
- * @param {int} lowSize 行サイズ
- * @param {int} colSize 列サイズ
+ * @param {number} lowSize 行サイズ
+ * @param {number} colSize 列サイズ
  * @returns {Array} lowSize * colSizeサイズの二次元配列
  */
 function createDataInitialize(lowSize, colSize){
@@ -87,13 +82,12 @@ function createDataInitialize(lowSize, colSize){
 /**
  * 設定するデータの取得
  * @param {Array} data シートの全データ
- * @param {int} dataColum dataにあるデータの位置
+ * @param {number} dataColum dataにあるデータの位置
  * @returns {Array} 設定するデータ
  */
 function getTestDatas(data, dataColum){
-  var START_ROW_INDEX = 3
   var d = []
-  for(var i = START_ROW_INDEX; i < data.length; i++){
+  for(var i = DATA_FIRST_ROW; i < data.length; i++){
     d.push(data[i][dataColum])
   }
 
@@ -157,7 +151,7 @@ function setData(settingObj, name, data){
 /**
  * Keyが出現する階層の取得
  * @param {String} data Key名
- * @returns {int} dataがある階層
+ * @returns {number} dataがある階層
  */
 function getLevel(data){
   for(var i = 0; i < data.length; i++){

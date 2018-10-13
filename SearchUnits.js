@@ -2,8 +2,8 @@
  * 行番号取得
  * @param {Array} data 検索対象配列
  * @param {Object} val 検索対象オブジェクト
- * @param {int} col 検索対象列番号
- * @param {int} row 検索開始列
+ * @param {number} col 検索対象列番号
+ * @param {number} row 検索開始列
  */
 function getRow(data, val, col, row) {
   for(var i = row; i < data.length; i++){
@@ -18,7 +18,7 @@ function getRow(data, val, col, row) {
  * 列番号取得
  * @param {Array} data 検索対象配列
  * @param {Object} val 検索対象オブジェクト
- * @param {int} row 検索対象行番号
+ * @param {number} row 検索対象行番号
  */
 function getColumn(data, val, row, col) {
   var datas = data[row]
