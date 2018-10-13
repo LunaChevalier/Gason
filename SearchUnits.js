@@ -1,3 +1,10 @@
+/**
+ * 行番号取得
+ * @param {Array} data 検索対象配列
+ * @param {Object} val 検索対象オブジェクト
+ * @param {int} col 検索対象列番号
+ * @param {int} row 検索開始列
+ */
 function getRow(data, val, col, row) {
   for(var i = row; i < data.length; i++){
     if(data[i][col] === val){
@@ -7,6 +14,12 @@ function getRow(data, val, col, row) {
   return -1;
 }
 
+/**
+ * 列番号取得
+ * @param {Array} data 検索対象配列
+ * @param {Object} val 検索対象オブジェクト
+ * @param {int} row 検索対象行番号
+ */
 function getColumn(data, val, row, col) {
   var datas = data[row]
   for(var i = row; i < datas.length; i++){
@@ -16,19 +29,6 @@ function getColumn(data, val, row, col) {
     }
   }
   return -1;
-}
-
-function getColumnSingle(data, val, row) {
-  for(var i = row; i < data.length; i++){
-    if(data[i] !== val){
-      return i;
-    }
-  }
-  return -1;
-}
-
-function getRowIndex(data, val) {
-  return getRow(data, val, 0, 0)
 }
 
 function getLastIndex(sheet){
