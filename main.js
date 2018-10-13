@@ -6,12 +6,13 @@ function getTestData() {
   for(var i = 0; i < sheetNumber; i++){
     var sheet = spreadsheet.getSheets()[i]
     var data = sheet.getDataRange().getValues()
+    var dataClass = getDataClass(sheet, data)
     var keys = getJsonKeyRange(sheet, data)
     var endCol = getColumn(data, 'end', 1, 0)
     var jsonObj = new Object()
     var testDatas = []
     for(var j = 11; j < endCol; j++){
-      testDatas.push(cleateJson(keys, getTestDatas(data, j)))
+      testDatas.push(createJson(keys, getTestDatas(data, j)))
     }
     jsonObj['fileName'] = data[0][4]
     jsonObj['testDatas'] = testDatas
@@ -30,7 +31,7 @@ function getJsonKeyRange(sheet, data){
   var END_COLUMN_INDEX = 8
   var START_ROW_INDEX = 3
   var TAG_COUNT = lastIndexs[0] - START_ROW_INDEX
-  var d = cleateDataInitialize(TAG_COUNT, END_COLUMN_INDEX)
+  var d = createDataInitialize(TAG_COUNT, END_COLUMN_INDEX)
   var i, j
   for(i = 0; i < TAG_COUNT; i++){
     for(j = 0; j < END_COLUMN_INDEX; j++){
@@ -40,7 +41,19 @@ function getJsonKeyRange(sheet, data){
   return d
 }
 
-function cleateDataInitialize(lowSize, colSize){
+function getDataClass(sheet, data){
+  var lastIndexs = getLastIndex(sheet)
+  var DATA_CLASS_COLUMN_INDEX = 10
+  var START_ROW_INDEX = 3
+  var TAG_COUNT = lastIndexs[0] - START_ROW_INDEX
+  var d = new Array()
+  for(var i = START_ROW_INDEX; i < TAG_COUNT + START_ROW_INDEX; i++){
+    d.push(data[i][DATA_CLASS_COLUMN_INDEX])
+  }
+  return d
+}
+
+function createDataInitialize(lowSize, colSize){
   var table = new Array(lowSize)
   for(var i = 0; i < lowSize; i++){
     table[i] = new Array(colSize)
@@ -60,7 +73,7 @@ function getTestDatas(data, dataColum){
   return d
 }
 
-function cleateJson(keys, dataColum){
+function createJson(keys, dataColum){
   var obj = new Object()
   var level = 0
   var keysJson = []
