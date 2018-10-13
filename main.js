@@ -12,7 +12,7 @@ function getTestData() {
     var jsonObj = new Object()
     var testDatas = []
     for(var j = 11; j < endCol; j++){
-      testDatas.push(createJson(keys, getTestDatas(data, j)))
+      testDatas.push(createJson(keys, dataClass, getTestDatas(data, j)))
     }
     jsonObj['fileName'] = data[0][4]
     jsonObj['testDatas'] = testDatas
@@ -73,7 +73,7 @@ function getTestDatas(data, dataColum){
   return d
 }
 
-function createJson(keys, dataColum){
+function createJson(keys, dataClass, dataColum){
   var obj = new Object()
   var level = 0
   var keysJson = []
@@ -86,13 +86,15 @@ function createJson(keys, dataColum){
     level = getLevel(keys[i])
     keysJson.push(keys[i][level])
 
-    // データがある場合，それを設定する
-    if(dataColum[i] !== ''){
+    // クラスが設定されている場合，それを設定する
+    if(dataClass[i] !== ''){
       var settingData = dataColum[i]
       if(settingData === '\"\"'){
         settingData = ''
       }
-      setData(obj, keysJson, settingData)
+      if(settingData !== '' || dataColum[i]=== '\"\"'){
+        setData(obj, keysJson, settingData)
+      }
       keysJson.pop()
     }
   }
