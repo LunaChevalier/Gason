@@ -1,3 +1,7 @@
+/**
+ * Json形式のテストデータを作成するメソッド
+ * @returns {String} 対象スプレッドシートの全シート分をJsonで出力
+ */
 function getTestData() {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
   var sheetNumber = spreadsheet.getNumSheets()
@@ -25,6 +29,12 @@ function getTestData() {
   return json
 }
 
+/**
+ * シートからJsonKey及び階層を配列として取得
+ * @param {sheet} sheet 対象シート
+ * @param {Array} data シートの配列データ
+ * @returns {Array} d JsonKey及び階層が読み込まれた配列
+ */
 function getJsonKeyRange(sheet, data){
   var lastIndexs = getLastIndex(sheet)
   var START_COLUMN_INDEX = 1
@@ -41,6 +51,12 @@ function getJsonKeyRange(sheet, data){
   return d
 }
 
+/**
+ * 対象シートから設定するクラスの配列を取得
+ * @param {sheet} sheet 対象シート
+ * @param {Array} data シートの全データ
+ * @returns {Array} d 設定するクラスの配列
+ */
 function getDataClass(sheet, data){
   var lastIndexs = getLastIndex(sheet)
   var DATA_CLASS_COLUMN_INDEX = 10
@@ -53,6 +69,12 @@ function getDataClass(sheet, data){
   return d
 }
 
+/**
+ * 生成するテストデータの初期化
+ * @param {int} lowSize 行サイズ
+ * @param {int} colSize 列サイズ
+ * @returns {Array} lowSize * colSizeサイズの二次元配列
+ */
 function createDataInitialize(lowSize, colSize){
   var table = new Array(lowSize)
   for(var i = 0; i < lowSize; i++){
@@ -62,7 +84,12 @@ function createDataInitialize(lowSize, colSize){
   return table
 }
 
-
+/**
+ * 設定するデータの取得
+ * @param {Array} data シートの全データ
+ * @param {int} dataColum dataにあるデータの位置
+ * @returns {Array} 設定するデータ
+ */
 function getTestDatas(data, dataColum){
   var START_ROW_INDEX = 3
   var d = []
@@ -73,6 +100,12 @@ function getTestDatas(data, dataColum){
   return d
 }
 
+/**
+ * テストデータのオブジェクト生成
+ * @param {Array} keys 設定するKey
+ * @param {Array} dataClass 設定するクラス
+ * @param {Array} dataColum 設定するデータ
+ */
 function createJson(keys, dataClass, dataColum){
   var obj = new Object()
   var level = 0
@@ -102,6 +135,12 @@ function createJson(keys, dataClass, dataColum){
   return obj
 }
 
+/**
+ * 指定されたオブジェクトにプロパティとデータを設定
+ * @param {Object} settingObj 設定対象のオブジェクト
+ * @param {Array} name 設定するプロパティ
+ * @param {Object} data 設定するデータ
+ */
 function setData(settingObj, name, data){
   if(name.length == 1){
     settingObj[name[0]] = data
@@ -115,10 +154,16 @@ function setData(settingObj, name, data){
   }
 }
 
-function setObject(setObj, tagName){
-  setObj[tagName] = new Object()
-}
-
+/**
+ * Keyが出現する階層の取得
+ * @param {String} data Key名
+ * @returns {int} dataがある階層
+ */
 function getLevel(data){
-  return getColumnSingle(data, '', 0)
+  for(var i = 0; i < data.length; i++){
+    if(data[i] !== ''){
+      return i;
+    }
+  }
+  return -1;
 }
